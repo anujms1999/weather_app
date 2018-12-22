@@ -1,4 +1,3 @@
-const request = require('request');
 const yargs = require('yargs');
 
 const geocode = require('./geocode/geocode');
@@ -22,7 +21,15 @@ geocode.geocodeAddress(argv.address,(errorMessage,results) => {
   if(errorMessage){
     console.log(errorMessage);
   }else {
-    console.log(JSON.stringify(results,undefined,2));
+    console.log(results.address);
+    weather.weatherResults(api,results,(errorMessage,weatherResults) => {
+      if(errorMessage){
+        console.log(errorMessage);
+      }else {
+        console.log(`It's currently ${weatherResults.temperature}.
+         It's feel like ${weatherResults.apparentTemperature}`);
+      }
+    });
   }
 });
 // var results = {
@@ -30,11 +37,5 @@ geocode.geocodeAddress(argv.address,(errorMessage,results) => {
 //   latitude: 39.9396284,
 //   longitude: -75.186639999999
 // }
-weather.weatherTemp(api,results,(errorMessage,temperature) => {
-  if(errorMessage){
-    console.log(errorMessage);
-  }else {
-    console.log(`Temperature: ${temperature}`);
-  }
-});
+
 

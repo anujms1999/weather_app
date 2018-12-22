@@ -1,6 +1,6 @@
 const request = require('request');
 
-var weatherTemp = (api,results,callback) => {
+var weatherResults = (api,results,callback) => {
   request({
     url: `https://api.forecast.io/forecast/${api}/${results.latitude},${results.longitude}`,
     json: true,
@@ -12,12 +12,15 @@ var weatherTemp = (api,results,callback) => {
       callback('Bad request');
     }
     else if( !error && response.statusCode === 200){
-      callback(undefined,body.currently.temperature);
+      callback(undefined,{
+        temperature: body.currently.temperature,
+        apparentTemperature: body.currently.apparentTemperature,
+      });
     }
 
   });
 };
 
 module.exports = {
-  weatherTemp,
+  weatherResults,
 }
